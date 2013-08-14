@@ -58,15 +58,28 @@
     // todo: fill in all these functions - they'll help you!
 
     hasRowConflictAt: function(rowIndex){
-      return false; // fixme
+      return 1 < _.reduce(this.get(rowIndex), function(memo, item) {
+        return memo + item;
+      });
     },
 
     hasAnyRowConflicts: function(){
+      for (var i = 0 ; i < this.get('n') ; i++) {
+        if(this.hasRowConflictAt(i)) {
+          return true;
+        }
+      }
       return false; // fixme
     },
 
     hasColConflictAt: function(colIndex){
-      return false; // fixme
+      var checkarr = [];
+      for (var i = 0 ; i < this.get('n') ; i++) {
+        checkarr.push(this.get(i)[colIndex]);
+      }
+      return 1 < _.reduce(checkarr, function(memo, item){
+        return memo + item;
+      });
     },
 
     hasAnyColConflicts: function(){
