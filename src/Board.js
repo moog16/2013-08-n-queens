@@ -60,7 +60,7 @@
     hasRowConflictAt: function(rowIndex){
       return 1 < _.reduce(this.get(rowIndex), function(memo, item) {
         return memo + item;
-      });
+      }, 0);
     },
 
     hasAnyRowConflicts: function(){
@@ -79,27 +79,58 @@
       }
       return 1 < _.reduce(checkarr, function(memo, item){
         return memo + item;
-      });
+      }, 0);
     },
 
     hasAnyColConflicts: function(){
-      return false; // fixme
+      for (var i = 0 ; i < this.get('n') ; i++) {
+        if(this.hasColConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow){
-      return false; // fixme
+      var checkarr = [];
+      for (var i = 0 ; i < this.get('n') ; i++ ) {
+        if (this.get(i)[majorDiagonalColumnIndexAtFirstRow+i]) {
+          checkarr.push(this.get(i)[majorDiagonalColumnIndexAtFirstRow+i]);
+        }
+      }
+      return 1 < _.reduce(checkarr, function(memo, item){
+        return memo + item;
+      }, 0);
     },
 
     hasAnyMajorDiagonalConflicts: function(){
-      return false; // fixme
+      for (var i = 0 ; i < this.get('n') ; i++) {
+        if(this.hasMajorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow){
-      return false; // fixme
+      var checkarr = [];
+      for (var i = 0 ; i < this.get('n') ; i++ ) {
+        if (this.get(i)[minorDiagonalColumnIndexAtFirstRow-i]) {
+          checkarr.push(this.get(i)[minorDiagonalColumnIndexAtFirstRow-i]);
+        }
+      }
+      return 1 < _.reduce(checkarr, function(memo, item){
+        return memo + item;
+      }, 0);
     },
 
     hasAnyMinorDiagonalConflicts: function(){
-      return false; // fixme
+      for (var i = 0 ; i < this.get('n') ; i++) {
+        if(this.hasMinorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     }
 
   });
