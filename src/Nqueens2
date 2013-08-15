@@ -1,0 +1,110 @@
+var nQueens = {};
+nQueens.findNQueens = function(n) {
+
+  // create n zeros in an array
+
+  var initialPossPlaces = [];
+  for(var i=0; i<n; i++) {
+    initialPossPlaces.push(0);
+  }
+
+  //initialize our blacklisters with the 0 arrays
+
+  var blacklister = {};
+  blacklister.minor = initialPossPlaces.slice(0);
+  blacklister.major = initialPossPlaces.slice(0);
+  blacklister.column = initialPossPlaces.slice(0);
+
+  //initialize the counter
+
+  nQueens.counter = 0;
+
+  // Start recursion / return number of queens
+
+  var possibleIndexes = nQueens.possibleIndexes(nQueens.notPossible(blacklister));
+
+  nQueens.queenPlacer(n, possibleIndexes, blacklister);
+
+  return nQueens.counter;
+};
+
+nQueens.counter = 0;
+
+nQueens.shifter = function(blacklister) {
+  var blacklister2 = {};
+  for (var key in blacklister) {
+    blacklister2[key] = blacklister[key];
+  }
+  blacklister2.minor.pop();
+  blacklister2.minor.unshift(0);
+
+  blacklister2.major.shift();
+  blacklister2.major.push(0);
+
+  return blacklister2;
+};
+
+nQueens.notPossible = function(blacklister) {
+  var notPossiblePlaces = [];
+  for(var i=0; i<blacklister.column.length; i++) {
+    notPossiblePlaces[i] = blacklister.column[i] || blacklister.minor[i] || blacklister.major[i];
+  }
+
+  return notPossiblePlaces;
+};
+
+nQueens.possibleIndexes = function(notPossiblePlaces) {
+  var possibleIndexes = [];
+  _.each(notPossiblePlaces, function(notPossiblePlace, index) {
+    if (!(notPossiblePlace)) {
+      possibleIndexes.push(index);
+    };
+  });
+
+
+  // console.log(notPossiblePlaces, possibleIndexes);
+  return possibleIndexes;
+};
+
+nQueens.queenPlacer = function(n, possibleIndexes, blacklister) {
+  // ** if column.sum = n
+  if (_.reduce(blacklister.column, function(a, b) {return a + b}, 0) === n) {
+    // incriment the queen counter
+    // console.log(blacklister, " completed");
+    nQueens.counter = nQueens.counter + 1;
+    // end recursion;
+  // ** if there are no possibleIndexes
+  } else if (possibleIndexes.length === 0) {
+    // end recursion;
+    return false;
+  //** if there are possibleIndexes
+  } else {
+    // for each possibleIndex
+    for (var i = 0 ; i < possibleIndexes.length ; i++) {
+     // clone blacklister
+      var blacklister2 = {};
+      for (var key in blacklister) {
+        blacklister2[key] = blacklister[key];
+      }
+      blacklister2.column[possibleIndexes[i]] = 1;
+      blacklister2.minor[possibleIndexes[i]] = 1;
+      blacklister2.major[possibleIndexes[i]] = 1;
+      blacklister2 = nQueens.shifter(blacklister2);
+      // console.log(blacklister2, item, collection);
+      var possibleIndexes2 = nQueens.possibleIndexes(nQueens.notPossible(blacklister2));
+      nQueens.queenPlacer(n, possibleIndexes2, blacklister2);
+      blacklister2.column[possibleIndexes[i]] = 0;
+      blacklister2.minor[possibleIndexes[i]] = 0;
+      blacklister2.major[possibleIndexes[i]] = 0;
+    }
+  }
+
+
+  // placeQueen at a possibleIndex;
+  // blacklisterClone.column at index = 1;
+  // blacklisterClone.minor at index = 1;
+  // blacklisterClone.major at index = 1;
+  // blacklisterClone = nQueens.shifter(blacklister);
+  // possibleIndexes = possibleIndexes(notPossible(blacklisterClone));
+  // recurse(n, possibleIndexes, blacklister)
+};

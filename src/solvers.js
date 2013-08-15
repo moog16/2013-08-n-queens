@@ -90,8 +90,8 @@ nQueens.queenPlacer = function(n, minor, major, column, possibleIndexes, countOf
     } else if (possibleIndexes.length > 0) {
       var queenPlace = possibleIndexes[i];
       column[queenPlace] = 1;
-      minor[queenPlace + 1] = 1;
-      major[queenPlace - 1] = 1;
+      minor[queenPlace] = 1;
+      major[queenPlace] = 1;
 
       var possibleIndex = this.collisions(n, minor, major, column);
 
