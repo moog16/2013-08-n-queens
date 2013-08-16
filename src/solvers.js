@@ -23,13 +23,7 @@ window.findNQueensSolution = function(n){
 };
 
 window.countNQueensSolutions = function(n){
-  var solutionCount = undefined; //fixme
 
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-  return solutionCount;
-};
-
-var findNQueens = function(n) {
   var queenCount = 0;
 
   var traverse = function(placements) {
@@ -45,7 +39,8 @@ var findNQueens = function(n) {
   };
 
   traverse([]);
-
+  
+  console.log('Number solution for ' + n + ' queens:', queenCount);
   return queenCount;
 };
 
