@@ -28,13 +28,20 @@ var countNQueensSolutions = function(n) {
   var traverse = function(threats) {
     for(var col=0; col<n; col++) {
       var nextRowThreats = calculateThreats(threats, col);
-      if() {
-
+      if(!nextRowThreats.noSpace[col]) {
+        traverse(threats);
+        
       }
     }
   };
-  
-  traverse({});
+
+  var threats = {};
+  threats.major = {};
+  threats.minor = {};
+  threats.column = {};
+  threats.noSpace = {};
+
+  traverse(threats);
 
   console.log('Number solution for ' + n + ' queens:', queenCount);
   return queenCount;
@@ -43,13 +50,16 @@ var countNQueensSolutions = function(n) {
 var calculateThreats = function(threats, col, n) {
   threats.column[col] = true;
   threats.minor = calculateMinorThreats(threats, col, n);
-  threats.major = calculateMajorThreats(threats, col);
-  
-  return ;
+  threats.major = calculateMajorThreats(threats, col, n);
+  threats.noSpace = {};
+  for(var i=0; i<n; i++) {
+    threats.noSpace[i] = threats.minor[i] || threats.major[i] || threats.column[i];
+  }
+
+  return threats;
 };
 
 var calculateMajorThreats = function(threats, col, n) {
-  console.log(threats.major);
   for(var key in threats.major) {
     if(key+1 <= n) {
       threats.major[key+1] = true;
