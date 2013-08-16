@@ -22,66 +22,60 @@ window.findNQueensSolution = function(n){
   return solution;
 };
 
-window.countNQueensSolutions = function(n){
-
+var countNQueensSolutions = function(n) {
   var queenCount = 0;
+  // columnThreats, minorThreats, majorThreats, sumThreats
+  var traverse = function(threats) {
+    for(var col=0; col<n; col++) {
+      var nextRowThreats = calculateThreats(threats, col);
+      if() {
 
-  var traverse = function(placements) {
-    if(placements.length === n) {
-      queenCount++;
-    } else {
-      for(var col=0; col<n; col++) {
-        if(!hasAnyConflicts(placements, col)) {
-          traverse(placements.concat([col]));
-        } 
       }
     }
   };
-
-  traverse([]);
   
+  traverse({});
+
   console.log('Number solution for ' + n + ' queens:', queenCount);
   return queenCount;
 };
 
-var hasAnyColConflicts = function(placements, col) {
-  for(var i=0; i<placements.length; i++) {
-    if(placements[i] === col) {
-      return true;
+var calculateThreats = function(threats, col, n) {
+  threats.column[col] = true;
+  threats.minor = calculateMinorThreats(threats, col, n);
+  threats.major = calculateMajorThreats(threats, col);
+  
+  return ;
+};
+
+var calculateMajorThreats = function(threats, col, n) {
+  console.log(threats.major);
+  for(var key in threats.major) {
+    if(key+1 <= n) {
+      threats.major[key+1] = true;
     }
+    threats.major[key] = false;
   }
-  return false;
+  if(col < n) {
+    threats.major[col+1] = true;
+  }
+  
+  return threats.major;
 };
 
-var hasAnyMajorDiagConflicts = function(placements, col) {
-  for(var i=0; i<placements.length; i++) {
-    if(placements.length - i + placements[i] === col) {
-      return true;
+var calculateMinorThreats = function(threats, col) {
+  for(var key in threats.minor) {
+    if(key > 0) {
+      threats.minor[key-1] = true;
     }
+    threats.minor[key] = false;
   }
-  return false;  
-};
-
-var hasAnyMinorDiagConflicts = function(placements, col) {
-  for(var i=0; i<placements.length; i++) {
-    if(i - placements.length + placements[i] === col) {
-      return true;
-    }
+  if(col > 0) {
+    threats.minor[col-1] = true;
   }
-  return false;  
+
+  return threats.minor;
 };
-
-var hasAnyConflicts = function(placements, col) {
-  if(hasAnyColConflicts(placements, col) ||
-    hasAnyMinorDiagConflicts(placements, col) ||
-    hasAnyMajorDiagConflicts(placements, col) ) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-
 
 // This function uses a board visualizer lets you view an interactive version of any piece matrix.
 
