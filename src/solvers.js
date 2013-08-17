@@ -16,21 +16,17 @@ window.countNRooksSolutions = function(n){
 };
 
 window.findNQueensSolution = function(n){
-  var solution = undefined; //fixme
 
-  console.log('Single solution for ' + n + ' queens:', solution);
-  return solution;
-};
-
-var countNQueensSolutions = function(n) {
   var queenCount = 0;
-  // columnThreats, minorThreats, majorThreats, sumThreats
-  var traverse = function(threats) {
+
+  var traverse = function(threats, row) {
+    if(row === n-1) {
+      queenCount++;
+    }
     for(var col=0; col<n; col++) {
       var nextRowThreats = calculateThreats(threats, col);
       if(!nextRowThreats.noSpace[col]) {
-        traverse(threats);
-        
+        traverse(threats, col);
       }
     }
   };
@@ -41,7 +37,7 @@ var countNQueensSolutions = function(n) {
   threats.column = {};
   threats.noSpace = {};
 
-  traverse(threats);
+  traverse(threats, 0);
 
   console.log('Number solution for ' + n + ' queens:', queenCount);
   return queenCount;
