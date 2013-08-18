@@ -15,18 +15,22 @@ window.countNRooksSolutions = function(n){
   return solutionCount;
 };
 
-window.findNQueensSolution = function(n){
+var countNQueensSolutions = function(n){
 
   var queenCount = 0;
 
   var traverse = function(threats, row) {
-    if(row === n-1) {
-      queenCount++;
+    if(n >= 4) {
+      debugger;
     }
-    for(var col=0; col<n; col++) {
-      var nextRowThreats = calculateThreats(threats, col);
-      if(!nextRowThreats.noSpace[col]) {
-        traverse(threats, col);
+    if(row > n || n===1 || n===0) {
+      queenCount++;
+    } else {
+      for(var col=0; col<n; col++) {
+        if(!threats.noSpace[col]) {
+          var nextRowThreats = Object.create(calculateThreats(threats, col, n));
+          traverse(nextRowThreats, row+1);
+        }
       }
     }
   };
